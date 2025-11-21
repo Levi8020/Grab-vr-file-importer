@@ -3,10 +3,26 @@
 <head>
   <title>Grab VR Mod Installer</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; }
-    .hidden { display: none; }
-    .page { margin-top: 40px; }
-    .button { padding: 10px 20px; margin: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .hidden {
+      display: none;
+    }
+    .page {
+      margin-top: 40px;
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
     .dropzone {
       border: 2px dashed #888;
       background: #fff;
@@ -15,15 +31,23 @@
       border-radius: 10px;
       margin-top: 20px;
     }
+    #grabImage {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 150px;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
 
   <!-- Page 1: Connect -->
   <div id="page1" class="page">
+    <img id="grabImage" src="grab-image.png" alt="Grab VR Logo" />
     <h1>Step 1: Connect Your Headset</h1>
     <p>Please connect your Grab VR headset via USB-C.</p>
-    <button class="button" onclick="goToPage2()">Continue</button>
+    <button class="button" onclick="goToPage(2)">Continue</button>
   </div>
 
   <!-- Page 2: Choose Folder -->
@@ -31,6 +55,8 @@
     <h1>Step 2: Choose Install Location</h1>
     <button class="button" onclick="selectFolder('levels')">Levels</button>
     <button class="button" onclick="selectFolder('prefabs')">Prefabs</button>
+    <br>
+    <button class="button" onclick="goToPage(1)">Go Back</button>
   </div>
 
   <!-- Page 3: Drop File -->
@@ -42,17 +68,18 @@
       <label for="fileInput" class="button">Choose File</label>
     </div>
     <button class="button hidden" id="uploadBtn" onclick="uploadFile()">Upload</button>
+    <br>
+    <button class="button" onclick="goToPage(2)">Go Back</button>
   </div>
 
   <script>
-    function goToPage2() {
-      document.getElementById('page1').classList.add('hidden');
-      document.getElementById('page2').classList.remove('hidden');
+    function goToPage(pageNum) {
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+      document.getElementById('page' + pageNum).classList.remove('hidden');
     }
 
     function selectFolder(folder) {
-      document.getElementById('page2').classList.add('hidden');
-      document.getElementById('page3').classList.remove('hidden');
+      goToPage(3);
       document.getElementById('targetFolder').textContent = folder;
     }
 
@@ -71,7 +98,7 @@
         return;
       }
       alert(`"${file.name}" will be installed to /${folder} folder.`);
-      // You can pass this info to your PC-side script later
+      // This is where you'd trigger the helper script later
     }
   </script>
 
